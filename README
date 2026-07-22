@@ -1,0 +1,195 @@
+# 🏨 API Reference — Sistema de Gestión Hotelera
+
+> **Base URL:** `/api/v1/`
+
+---
+
+## 🔐 1. Módulo: Autenticación (`/auth`)
+
+### `POST` `/api/v1/auth/log-in`
+* **Descripción:** Valida credenciales de usuario y genera el token de acceso JWT.
+* **Métodos HTTP:** `POST`
+* **Especificaciones Técnicas:**
+  * Recibe credenciales (`username`/`email` y `password`).
+  * Encriptación y verificación de contraseñas mediante `bcrypt`.
+  * Serialización de salida mediante Pydantic integrando la información relevante del recurso `Users`.
+
+---
+
+### `POST` `/api/v1/auth/log-out`
+* **Descripción:** Revoca la sesión actual e invalida el token activo.
+* **Métodos HTTP:** `POST`
+* **Especificaciones Técnicas:**
+  * Requiere cabecera de autorización: `Authorization: Bearer <token>`.
+  * Middleware / Dependencia de seguridad intercepta la petición para gestionar el cierre de sesión (o registro en lista negra).
+
+
+## 🏨 2. Módulo: Habitaciones (`/rooms`)
+
+### `GET` | `POST` `/api/v1/rooms`
+* **Descripción:** Gestión de la colección de habitaciones del hotel.
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * **GET:** Extrae habitaciones con disponibilidad y filtros aplicados.
+  * **Filtrado Avanzado:** Soporte para Query Parameters (categoría, estado, rango de precios).
+  * Validaciones de Type-Casting y Type Hints en argumentos con Pydantic.
+  * Serialización estricta del modelo JSON tanto de entrada como de salida.
+
+---
+
+### `GET` | `PUT` | `PATCH` | `DELETE` `/api/v1/rooms/{room_number}`
+* **Descripción:** Operaciones individuales sobre una habitación específica según su código/número.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`, `DELETE`
+* **Especificaciones Técnicas:**
+  * **GET:** Obtiene los detalles específicos del recurso por `{room_number}`.
+  * **PUT:** Actualización completa del recurso.
+  * **PATCH:** Actualización parcial (atributos específicos).
+  * 🛑 **Restricción DELETE (Soft Delete):** Prohibido el borrado físico para evitar romper el historial de hospedajes pasados por integridad referencial (FK). Implementar flag lógico (`is_active: bool`).
+
+---
+
+## 🏷️ 3. Módulo: Categorías de Habitaciones (`/category`)
+
+### `GET` | `POST` `/api/v1/category`
+* **Descripción:** Consulta y registro de las categorías o tipos de habitación (Ej: Suite, Individual, Doble).
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * Retorna datos estructurados mediante el ORM.
+  * Validación estricta de esquemas Pydantic para entrada y salida.
+
+---
+
+### `GET` | `PUT` | `PATCH` | `DELETE` `/api/v1/category/{category_id}`
+* **Descripción:** Gestión individual de una categoría por su ID.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`, `DELETE`
+* **Especificaciones Técnicas:**
+  * Permite lectura (`GET`), actualización completa (`PUT`) y actualización parcial (`PATCH`).
+  * 🛑 **Validación de Borrado:** Si se intenta eliminar (`DELETE`), verificar previamente que no existan habitaciones asociadas a dicha categoría. Si existen, denegar con error `400 Bad Request`.
+
+---
+
+## 📌 4. Módulo: Estados de Habitación (`/status`)
+
+> ⚠️ **Nota de Arquitectura:** Módulo de **solo lectura**. Los estados (Disponible, Ocupada, Mantenimiento, Sucia) rigen las reglas de la interfaz.
+
+### `GET` `/api/v1/status`
+* **Descripción:** Listado maestro de estados registrados en el sistema.
+* **Métodos HTTP:** `GET`
+* **Especificaciones Técnicas:**
+  * Solo lectura para alimentar listas y componentes de la UI.
+  * Pydantic asegura la serialización limpia del JSON de salida.
+
+---
+
+### `GET` `/api/v1/status/{status_id}`
+* **Descripción:** Consulta individual de un estado de habitación por su ID.
+* **Métodos HTTP:** `GET`
+* **Especificaciones Técnicas:**
+  * 🛑 **Restricción (Sin POST, PUT, DELETE):** No se permite la manipulación en caliente de estados para no corromper la lógica del negocio.
+
+---
+
+## 👥 5. Módulo: Usuarios (`/users`)
+
+### `GET` | `POST` `/api/v1/users`
+* **Descripción:** Registro y consulta de usuarios del sistema (Personal / Clientes).
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * **GET:** Filtrado avanzado por múltiples atributos (rol, estado, búsqueda por nombre/cédula).
+  * Validaciones de salida y entrada estructuradas con Pydantic.
+
+---
+
+### `GET` | `PUT` | `PATCH` `/api/v1/users/{users_id}`
+* **Descripción:** Gestión individual del perfil de usuario.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`
+* **Especificaciones Técnicas:**
+  * **GET:** Obtención limpia del recurso en JSON.
+  * Soporte para actualizaciones completas (`PUT`) y parciales (`PATCH`).
+
+---
+
+## 🛡️ 6. Módulo: Roles (`/rol`)
+
+> ⚠️ **Nota de Arquitectura:** Módulo mayormente de **solo lectura** para poblar comboboxes de permisos en el frontend.
+
+### `GET` `/api/v1/rol`
+* **Descripción:** Lista los roles disponibles en el sistema (Admin, Recepcionista, Limpieza).
+* **Métodos HTTP:** `GET`
+* **Especificaciones Técnicas:**
+  * Uso de Query Parameters y validaciones internas de FastAPI.
+
+---
+
+### `GET` `/api/v1/rol/{rol_id}`
+* **Descripción:** Consulta la información de un rol específico por ID.
+* **Métodos HTTP:** `GET`
+
+---
+
+## 💳 7. Módulo: Métodos de Pago (`/payment-methods`)
+
+### `GET` | `POST` `/api/v1/payment-methods`
+* **Descripción:** Catálogo de métodos de pago soportados (Efectivo, Transferencia, Punto de Venta, Zelle).
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * Lectura y creación validada con esquemas Pydantic.
+
+---
+
+### `GET` | `PUT` | `PATCH` | `DELETE` `/api/v1/payment-methods/{payment_methods_id}`
+* **Descripción:** Administración individual de métodos de pago.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`, `DELETE`
+* **Especificaciones Técnicas:**
+  * 🛑 **Restricción DELETE (Soft Delete):** Un método de pago usado en transacciones pasadas no se elimina físicamente. Usar borrado lógico (`is_active = False`).
+
+---
+
+## 🔑 8. Módulo: Hospedajes (`/lodging`)
+
+### `GET` | `POST` `/api/v1/lodging`
+* **Descripción:** Registro y control de estadías/hospedajes activos e históricos.
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * **GET:** Filtrado avanzado por rango de fechas, usuario, habitación o estado.
+  * **Reglas de Negocio en Backend (`POST`):**
+    1. Validar que la habitación esté en estado "Disponible".
+    2. Validar que no existan colisiones de fechas con otro hospedaje.
+    3. Validar que `fecha_salida > fecha_entrada`.
+
+---
+
+### `GET` | `PUT` | `PATCH` `/api/v1/lodging/{lodging_id}`
+* **Descripción:** Consulta y actualización puntual del folio de hospedaje.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`
+
+---
+
+### ⚡ Transiciones de Estado de Hospedaje (Endpoints de Acción)
+
+* **`POST` `/api/v1/lodging/{id}/check-in`**
+  * Activa formalmente la estadía.
+  * Cambia el estado de la habitación asociada a **"Ocupada"**.
+
+* **`POST` `/api/v1/lodging/{id}/check-out`**
+  * Calcula la liquidación total de la estadía.
+  * Cierra el folio del hospedaje.
+  * Cambia la habitación asociada a estado **"Sucia"** (pendiente por limpieza).
+
+---
+
+## 📅 9. Módulo: Reservaciones (`/reservations`)
+
+### `GET` | `POST` `/api/v1/reservations`
+* **Descripción:** Gestión y creación de reservas previas a la llegada del cliente.
+* **Métodos HTTP:** `GET`, `POST`
+* **Especificaciones Técnicas:**
+  * 
+
+---
+
+### `GET` | `PUT` | `PATCH` | `DELETE` `/api/v1/reservations/{reservation_id}`
+* **Descripción:** Consulta, modificación o cancelación individual de una reserva.
+* **Métodos HTTP:** `GET`, `PUT`, `PATCH`, `DELETE`
+* **Especificaciones Técnicas:**
+  *
