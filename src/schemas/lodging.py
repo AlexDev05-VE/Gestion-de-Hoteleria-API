@@ -22,7 +22,6 @@ class StayType(str, Enum):
     CINCO_HORAS = "5 horas"
     SEIS_HORAS = "6 horas"
     AMANECER = "amanecer"
-    DIARIO = "diario"
 
 
 
@@ -80,7 +79,7 @@ class LodgingBase(BaseModel):
     stay_type: StayType = Field(
         ...,
         description="Tipo o modalidad de estadía (Por Horas, Diario, etc.)",
-        examples=[StayType.DIARIO],
+        examples=[StayType.AMANECER],
     )
     comments: CommentsType = None
 
