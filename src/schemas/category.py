@@ -12,10 +12,10 @@ class CategoryBase(BaseModel):
         description="Nombre de la categoría (ej. Suite, Individual, Doble)",
         examples=["Suite Presidencial"],
     )
-    precio: float = Field(
+    price: float = Field(
         ...,
-        gt=0,  # 'gt=0' garantiza que el precio sea estrictamente positivo (> 0)
-        description="Precio de la categoría por noche (debe ser mayor a 0)",
+        gt=0,  # 'gt=0' garantiza que el price sea estrictamente positivo (> 0)
+        description="price de la categoría por noche (debe ser mayor a 0)",
         examples=[150.50],
     )
 
@@ -45,10 +45,10 @@ class CategoryPatch(BaseModel):
         description="Nombre de la categoría",
         examples=["Doble Superior"],
     )
-    precio: float | None = Field(
+    price: float | None = Field(
         default=None,
         gt=0,
-        description="Precio de la categoría por noche (debe ser mayor a 0)",
+        description="price de la categoría por noche (debe ser mayor a 0)",
         examples=[180.00],
     )
 
