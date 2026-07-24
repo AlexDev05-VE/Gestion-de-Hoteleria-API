@@ -45,5 +45,5 @@ class StatusResponse(StatusBase):
     model_config = ConfigDict(
         from_attributes=True,
         # Permite que el Enum se serialice como string directo ("Disponible") en el JSON
-        use_enum_values=True 
+
     )

@@ -1,7 +1,5 @@
 from fastapi import FastAPI
-
-# Importa aquí tus routers a medida que los necesites
-# from src.routers import auth, category, lodging, payment_method, room, user
+from routers import status, category
 
 # ==========================================
 # CONFIGURACIÓN DE LA APLICACIÓN
@@ -17,15 +15,10 @@ app = FastAPI(
 
 
 # ==========================================
-# REGISTRO DE ROUTERS (Descomentar según módulos creados)
+# REGISTRO DE ROUTERS
 # ==========================================
-
-# app.include_router(auth.router)
-# app.include_router(user.router)
-# app.include_router(category.router)
-# app.include_router(room.router)
-# app.include_router(payment_method.router)
-# app.include_router(lodging.router)
+app.include_router(status.router)
+app.include_router(category.router)
 
 
 # ==========================================
