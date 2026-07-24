@@ -1,7 +1,7 @@
 from typing import Annotated, Optional
 from pydantic import BaseModel, Field, ConfigDict
-from src.schemas.status import StatusResponse
-from src.schemas.category import CategoryResponse
+from schemas.status import StatusResponse
+from schemas.category import CategoryResponse
 
 
 # ==========================================

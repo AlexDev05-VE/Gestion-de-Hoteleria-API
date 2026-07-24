@@ -1,5 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field
-from src.schemas.rol import RoleResponse
+from schemas.rol import RoleResponse
 
 
 # ======================================================================

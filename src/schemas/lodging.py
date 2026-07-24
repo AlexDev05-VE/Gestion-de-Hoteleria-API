@@ -7,10 +7,10 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from enum import Enum
 
 # Importamos los esquemas de respuesta para las entidades relacionadas
-from src.schemas.payment import PaymentMethodResponse
-from src.schemas.reservations import ReservationResponse
-from src.schemas.room import RoomResponse
-from src.schemas.user import UserResponse
+from schemas.payment import PaymentMethodResponse
+from schemas.reservations import ReservationResponse
+from schemas.room import RoomResponse
+from schemas.user import UserResponse
 
 
 class StayType(str, Enum):

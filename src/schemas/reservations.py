@@ -3,7 +3,7 @@ from typing import Annotated, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 # Importamos el esquema de respuesta de Categoría
-from src.schemas.category import CategoryResponse
+from schemas.category import CategoryResponse
 
 # ==========================================
 # TIPOS REUTILIZABLES CON ANNOTATED
