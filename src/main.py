@@ -9,8 +9,8 @@ app = FastAPI(
     title="Sistema de Gestión Hotelera API",
     description="API RESTful modular para el control de hospedajes, reservas, habitaciones y autenticación.",
     version="1.0.0",
-    docs_url="/docs",      # Swagger UI
-    redoc_url="/redoc",    # ReDoc UI
+    docs_url="/docs",      
+    redoc_url="/redoc",  
 )
 
 
@@ -25,8 +25,6 @@ app.include_router(user.router)
 app.include_router(payment.router)
 app.include_router(reservation.router)
 app.include_router(lodging.router)
-
-
 
 
 # ==========================================
