@@ -13,10 +13,12 @@ from schemas.room import RoomResponse
 from schemas.user import UserResponse
 
 
+"""ENUMERACIONES
+
+- StayType: Enumeración que define los tipos de estadía permitidos en el hotel
+"""
 class StayType(str, Enum):
-    """
-    Modalidades o tipos de estadía permitidos en el hotel.
-    """
+    """Tipos o modalidades de estadía permitidos en el hotel."""
     TRES_HORAS = "3 horas"
     CUATRO_HORAS = "4 horas"
     CINCO_HORAS = "5 horas"
@@ -24,11 +26,12 @@ class StayType(str, Enum):
     AMANECER = "amanecer"
 
 
+"""TIPOS REUTILIZABLES CON ANNOTATED
 
-# ==========================================
-# TIPOS REUTILIZABLES CON ANNOTATED
-# ==========================================
-
+- LodgingIDType: Alias para LodgingID con validación de entero positivo
+- IDType: Alias para ID con validación de entero positivo
+- CommentsType: Alias para Comments con validación de cadena opcional de hasta 250 caracteres
+"""
 LodgingIDType = Annotated[
     int,
     Field(
@@ -58,10 +61,18 @@ CommentsType = Annotated[
 ]
 
 
-# ==========================================
-# ESQUEMAS PRINCIPALES DE LODGING
-# ==========================================
+"""ESQUEMAS PRINCIPALES DE LODGING
 
+- LodgingBase: Clase base que define los atributos comunes de la entidad Lodging.
+
+- LodgingCreate: Clase que hereda de LodgingBase y define los atributos de la entidad Lodging para crear una nueva.
+
+- LodgingUpdate: Clase que hereda de BaseModel y define los atributos de la entidad Lodging para actualizar una existente (Reemplazo completo).
+
+- LodgingPatch: Clase que hereda de BaseModel y define los atributos de la entidad Lodging para actualizar una existente (Actualización parcial).
+
+- LodgingResponse: Clase que hereda de LodgingBase y define los atributos de la entidad Lodging para devolverlo como respuesta.
+"""
 
 class LodgingBase(BaseModel):
     """Atributos comunes compartidos por la entidad Lodging."""

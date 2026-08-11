@@ -1,10 +1,12 @@
 from typing import Annotated, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
-# ==========================================
-# TIPOS REUTILIZABLES CON ANNOTATED
-# ==========================================
 
+"""TIPOS REUTILIZABLES CON ANNOTATED
+
+- PaymentIDType: Alias para PaymentID con validación de entero positivo
+- PaymentNameType: Alias para PaymentName con validación de cadena opcional de hasta 200 caracteres
+"""
 PaymentIDType = Annotated[
     int, 
     Field(gt=0, description="Identificador único del método de pago (entero positivo)", examples=[1])
@@ -21,10 +23,18 @@ PaymentNameType = Annotated[
 ]
 
 
-# ==========================================
-# ESQUEMAS PRINCIPALES DE PAYMENT METHOD
-# ==========================================
+"""ESQUEMAS PRINCIPALES DE PAYMENT METHOD
 
+- PaymentMethodBase: Clase base que define los atributos comunes de la forma de pago
+
+- PaymentMethodCreate: Clase que hereda de PaymentMethodBase y define los atributos de la forma de pago para crear una nueva
+
+- PaymentMethodUpdate: Clase que hereda de BaseModel y define los atributos de la forma de pago para actualizar una existente (Reemplazo completo)
+
+- PaymentMethodPatch: Clase que hereda de BaseModel y define los atributos de la forma de pago para actualizar una existente (Actualización parcial)
+
+- PaymentMethodResponse: Clase que hereda de PaymentMethodBase y define los atributos de la forma de pago para devolverlo como respuesta
+"""
 class PaymentMethodBase(BaseModel):
     """Atributos comunes compartidos por la entidad PaymentMethod."""
     payment: PaymentNameType

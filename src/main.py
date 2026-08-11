@@ -13,10 +13,13 @@ app = FastAPI(
     redoc_url="/redoc",  
 )
 
-
 # ==========================================
 # REGISTRO DE ROUTERS
 # ==========================================
+
+"""
+Modularizacion con include_router para separar las rutas en archivos individuales de la ruta src/routers
+"""
 app.include_router(status.router)
 app.include_router(category.router)
 app.include_router(room.router)

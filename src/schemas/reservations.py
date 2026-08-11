@@ -1,13 +1,16 @@
 from datetime import datetime
 from typing import Annotated, Optional
 from pydantic import BaseModel, ConfigDict, Field
-
-# Importamos el esquema de respuesta de Categoría
 from schemas.category import CategoryResponse
 
-# ==========================================
-# TIPOS REUTILIZABLES CON ANNOTATED
-# ==========================================
+"""TIPOS REUTILIZABLES CON ANNOTATED
+
+- ReservationIDType: Alias para ReservationID con validación de entero positivo
+
+- ClientName: Alias para ClientName con validación de cadena opcional de hasta 100 caracteres
+
+- CategoryIDType: Alias para CategoryID con validación de entero positivo
+"""
 
 ReservationIDType = Annotated[
     int,
@@ -47,11 +50,16 @@ CategoryIDType = Annotated[
     ),
 ]
 
+"""ESQUEMAS PRINCIPALES DE RESERVACIÓN
 
-# ==========================================
-# ESQUEMAS PRINCIPALES DE RESERVACIÓN
-# ==========================================
+- ReservationBase: Clase base que define los atributos comunes de la reservación
 
+- ReservationCreate: Clase que hereda de ReservationBase y define los atributos de la reservación para crear una nueva
+
+- ReservationUpdate: Clase que hereda de BaseModel y define los atributos de la reservación para actualizar una existente (Reemplazo completo)
+
+- ReservationPatch: Clase que hereda de BaseModel y define los atributos de la reservación para actualizar una existente (Actualización parcial)
+"""
 
 class ReservationBase(BaseModel):
     """Atributos comunes compartidos por la entidad Reservation."""

@@ -16,16 +16,6 @@ router = APIRouter(
 )
 
 # ----------------------------------------------------------------------
-# MOCK DE DATOS LOCAL (Simulación de Base de Datos)
-# ----------------------------------------------------------------------
-FAKE_CATEGORIES_DB = [
-    {"category_id": 1, "category": "Simple", "price": 45.00},
-    {"category_id": 2, "category": "Doble", "price": 75.50},
-    {"category_id": 3, "category": "Suite Presidencial", "price": 180.00},
-]
-
-
-# ----------------------------------------------------------------------
 # ENDPOINTS
 # ----------------------------------------------------------------------
 

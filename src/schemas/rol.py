@@ -9,11 +9,10 @@ class RoleName(str, Enum):
     ADMINISTRADOR = "Administrador"
     RECEPCIONISTA = "Recepcionista"
 
+"""ESQUEMA DE SALIDA PARA ROL (Solo GET)
 
-
-# ======================================================================
-# ESQUEMA DE SALIDA PARA ROL (Solo GET)
-# ======================================================================
+- RoleResponse: Clase que hereda de BaseModel y define los atributos del rol para devolverlo como respuesta
+"""
 class RoleResponse(BaseModel):
     """
     Esquema utilizado únicamente para la lectura y serialización de Roles.
