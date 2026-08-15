@@ -27,7 +27,7 @@ class GetModel(ABC):
     """
     @classmethod
     @abstractmethod
-    def get_all(cls, db: Session, model: DeclarativeBase):
+    def getAllResources(cls, db: Session, model: DeclarativeBase):
         pass
 
     """
@@ -39,7 +39,7 @@ class GetModel(ABC):
     """
     @classmethod
     @abstractmethod
-    def get_by_id(cls, db: Session, id: int, model: DeclarativeBase):
+    def getById(cls, db: Session, id: int, model: DeclarativeBase):
         pass
 
     """
@@ -50,5 +50,18 @@ class GetModel(ABC):
     """
     @classmethod
     @abstractmethod
-    def get_by_field(cls, db: Session, model: DeclarativeBase):
+    def getByField(cls, db: Session, model: DeclarativeBase):
+        pass
+
+class PostModel(ABC):
+
+    """Clase Abstracta para manejar la logica de POST"""
+    """
+    - db: Session: Sesion de la base de datos
+    - model: DeclarativeBase: Modelo de la base de datos
+    - Retorna: DeclarativeBase: Registro creado
+    """
+    @classmethod
+    @abstractmethod
+    def post_resource(cls, db: Session, model: DeclarativeBase):
         pass
