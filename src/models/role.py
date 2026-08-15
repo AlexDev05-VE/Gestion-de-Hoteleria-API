@@ -1,16 +1,12 @@
 from typing import TYPE_CHECKING
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from models.base import Base
 
 if TYPE_CHECKING:
-    from src.models.user import User
+    from models.user import User
 
-"""
-Declarar Modelo de Base de DeclarativeBase
-Clase de Herencia para los modelos de SQLAlchemy.
-"""
-class Base(DeclarativeBase):
-    pass
+
 
 """
 Modelo de Role:

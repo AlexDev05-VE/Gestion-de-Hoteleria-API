@@ -1,15 +1,12 @@
 from typing import TYPE_CHECKING, List
 from sqlalchemy import Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
-if TYPE_CHECKING:
-    from src.models.room import Room
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from models.base import Base
 
-"""
-Declarar Modelo de Base de DeclarativeBase
-Clase de Herencia para los modelos de SQLAlchemy.
-"""
-class Base(DeclarativeBase):
-    pass
+if TYPE_CHECKING:
+    from models.room import Room
+
+
 
 """
 Modelo de Status:

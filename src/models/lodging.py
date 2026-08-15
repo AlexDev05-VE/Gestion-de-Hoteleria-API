@@ -1,21 +1,16 @@
 from datetime import datetime
 from typing import TYPE_CHECKING, Optional
 from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from models.base import Base
 
 if TYPE_CHECKING:
-    from src.models.payment_method import PaymentMethod
-    from src.models.reservation import Reservation
-    from src.models.room import Room
-    from src.models.user import User
+    from models.payment_method import PaymentMethod
+    from models.reservation import Reservation
+    from models.room import Room
+    from models.user import User
 
 
-"""
-Declarar Modelo de Base de DeclarativeBase
-Clase de Herencia para los modelos de SQLAlchemy.
-"""
-class Base(DeclarativeBase):
-    pass
 
 """
 Modelo de Lodging:

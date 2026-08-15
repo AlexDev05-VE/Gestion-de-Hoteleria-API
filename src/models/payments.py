@@ -1,16 +1,11 @@
 from sqlalchemy import Boolean, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase  
+from sqlalchemy.orm import Mapped, mapped_column, relationship  
 from typing import TYPE_CHECKING
+from models.base import Base
 
 if TYPE_CHECKING:
-    from src.models.lodging import Lodging
+    from models.lodging import Lodging
 
-"""
-Declarar Modelo de Base de DeclarativeBase
-Clase de Herencia para los modelos de SQLAlchemy.
-"""
-class Base(DeclarativeBase):
-    pass
 
 """
 Modelo de PaymentMethod:

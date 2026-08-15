@@ -1,19 +1,14 @@
 from datetime import datetime
 from typing import TYPE_CHECKING
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship, DeclarativeBase
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from models.base import Base
 
 if TYPE_CHECKING:
-    from src.models.categories import Category
-    from src.models.lodging import Lodging
+    from models.categories import Category
+    from models.lodging import Lodging
 
 
-"""
-Declarar Modelo de Base de DeclarativeBase
-Clase de Herencia para los modelos de SQLAlchemy.
-"""
-class Base(DeclarativeBase):
-    pass
 
 """
 Modelo de Reservation:
@@ -75,7 +70,7 @@ class Reservation(Base):
     )
 
     # Relacion con Lodgings
-    ldgings: Mapped[list["Lodging"]] = relationship(
+    lodgings: Mapped[list["Lodging"]] = relationship(
         "Lodging",
         back_populates="reservation",
     )
