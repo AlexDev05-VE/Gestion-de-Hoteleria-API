@@ -1,12 +1,12 @@
 # src/models/__init__.py
-from src.models.role import Role
-from src.models.user import User
-from src.models.categories import Category
-from src.models.status import Status
-from src.models.room import Room
-from src.models.payments import PaymentMethod
-from src.models.reservation import Reservation
-from src.models.lodging import Lodging
+from models.role import Role
+from models.user import User
+from models.categories import Category
+from models.status import Status
+from models.room import Room
+from models.payments import PaymentMethod
+from models.reservation import Reservation
+from models.lodging import Lodging
 
 # Opcional: define qué se expone al hacer import *
 __all__ = [
