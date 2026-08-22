@@ -1,67 +1,128 @@
+"""Módulo de abstracción base para operaciones CRUD.
+
+Proporciona la interfaz abstracta `CRUDModel`, definiendo el contrato estricto
+que deben cumplir todas las subclases encargadas de gestionar la persistencia 
+y consulta de recursos en la base de datos con SQLAlchemy.
+"""
 
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Any
 from sqlalchemy.orm import Session
-from sqlalchemy import select
-from sqlalchemy.orm import DeclarativeBase
+from models.base import Base
 
-"""
-Este modulo esta pensando exclusivamente para abstraer la logica de CRUD, el cual se va a encargar de todas las interaciones con la base de datos pero para usar clases abstractas para la herencia y reutilizar logica CRUD en los diferentes CRUD individuales
-"""
 
-"""
-Clases Abstractas para manejar la logica de GET
-- get_all: Metodo que se va a encargar de obtener todos los registros de un modelo
-- get_by_id: Metodo que se va a encargar de obtener un registro por ID
-- get_by_field: Metodo que se va a encargar de obtener registros por campo
-"""
+class CRUDModel(ABC):
+    """Clase base abstracta (ABC) para la implementación de patrones CRUD.
 
-class GetModel(ABC):
+    Establece los contratos de métodos requeridos para gestionar modelos ORM
+    de SQLAlchemy en la aplicación.
 
-    """Clase Abstracta para manejar la logica de GET"""
+    Attributes:
+        _model (type[Base] | None): Referencia a la clase del modelo ORM asociad.
     """
-    - db: Session: Sesion de la base de datos
-    - model: DeclarativeBase: Modelo de la base de datos
-    - Retorna: List[DeclarativeBase]: Lista de registros
-    - Falta implementacion - Implementar LIMIT y OFSET para paginacion y validacion de errores
-    """
+
+    _model: type[Base] | None = None
+
+    @classmethod
+    @property
+    def model(cls) -> type[Base] | None:
+        """Obtiene la clase del modelo ORM asignada al CRUD.
+
+        Returns:
+            type[Base] | None: Modelo de SQLAlchemy registrado en la subclase.
+        """
+        return cls._model
+
     @classmethod
     @abstractmethod
-    def getAllResources(cls, db: Session, model: DeclarativeBase):
+    def get_all(
+        cls,
+        db: Session,
+        fields: dict[str, Any] | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
+    ) -> list[Any]:
+        """Obtiene una lista de registros filtrada o paginada desde la BD.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            fields (dict[str, Any] | None): Diccionario clave-valor con filtros para la consulta.
+            limit (int | None): Límite máximo de registros a retornar.
+            offset (int | None): Desplazamiento inicial para paginación.
+
+        Returns:
+            list[Any]: Colección de instancias del modelo ORM recuperadas.
+        """
         pass
 
-    """
-    - db: Session: Sesion de la base de datos
-    - id: int: ID del registro a obtener
-    - model: DeclarativeBase: Modelo de la base de datos
-    - Retorna: DeclarativeBase: Registro
-    - Falta implementacion - Falta implementacion - Implementar LIMIT y OFSET para paginacion y validacion de errores
-    """
     @classmethod
     @abstractmethod
-    def getById(cls, db: Session, id: int, model: DeclarativeBase):
+    def get_by_id(cls, db: Session, id: int) -> Any:
+        """Obtiene un único registro por su clave primaria.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            id (int): Identificador único del recurso.
+
+        Returns:
+            Any: Instancia del modelo ORM correspondiente al ID.
+        """
         pass
 
-    """
-    - db: Session: Sesion de la base de datos
-    - model: DeclarativeBase: Modelo de la base de datos
-    - Retorna: List[DeclarativeBase]: Lista de registros
-    - Falta implementacion - Implementar validacion de campos y filtros, para obtener campos especificos y ordenar los registros
-    """
     @classmethod
     @abstractmethod
-    def getByField(cls, db: Session, model: DeclarativeBase):
+    def create(cls, db: Session, data: dict[str, Any] | None = None) -> Any:
+        """Crea y persiste un nuevo registro en la base de datos.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            data (dict[str, Any] | None): Diccionario con los atributos del nuevo registro.
+
+        Returns:
+            Any: Instancia del modelo ORM recién creado.
+        """
         pass
 
-class PostModel(ABC):
-
-    """Clase Abstracta para manejar la logica de POST"""
-    """
-    - db: Session: Sesion de la base de datos
-    - model: DeclarativeBase: Modelo de la base de datos
-    - Retorna: DeclarativeBase: Registro creado
-    """
     @classmethod
     @abstractmethod
-    def post_resource(cls, db: Session, model: DeclarativeBase):
+    def update(cls, db: Session, id: int, data: dict[str, Any]) -> Any:
+        """Actualiza completamente un registro existente en la base de datos.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            id (int): Identificador del registro a actualizar.
+            data (dict[str, Any]): Diccionario con los nuevos valores.
+
+        Returns:
+            Any: Instancia del modelo ORM actualizado.
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def patch(cls, db: Session, id: int, data: dict[str, Any]) -> Any:
+        """Actualiza parcialmente un registro existente en la base de datos.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            id (int): Identificador del registro a modificar.
+            data (dict[str, Any]): Diccionario con los campos específicos a modificar.
+
+        Returns:
+            Any: Instancia del modelo ORM modificado.
+        """
+        pass
+
+    @classmethod
+    @abstractmethod
+    def delete(cls, db: Session, id: int) -> None:
+        """Elimina un registro de la base de datos por su identificador.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+            id (int): Identificador del registro a eliminar.
+
+        Returns:
+            None
+        """
         pass
